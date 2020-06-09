@@ -18,16 +18,15 @@
 package test;
 
 import com.alibaba.com.caucho.hessian.io.Hessian2Output;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.caucho.hessian.test.A0;
 import com.caucho.hessian.test.A1;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import test.model.DateDemo;
 
@@ -459,6 +458,27 @@ public class TestCustomReply {
         set.add(new BigInteger("1234"));
         set.add(new BigDecimal("123.4"));
         output.writeObject(set);
+        output.flush();
+    }
+
+    public void customReplyMapAndMap() throws Exception {
+        Map<String, List<Animal>> a = new HashMap<>();
+        List<Animal> p1 = new ArrayList<>();
+        a.put("p1", p1);
+
+        Map<String, List<Animal>> b = new HashMap<>();
+        List<Animal> p2 = new ArrayList<Animal>();
+        b.put("p2", p2);
+
+        Map<String, Object> params1 = new HashMap<>();
+        params1.put("a", a);
+        Map<String, Object> params2 = new HashMap<>();
+        params2.put("b", b);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("obj1", params1);
+        map.put("obj2", params2);
+        output.writeObject((Map<String, Object>)JSON.parseObject(JSON.toJSONString(map), Map.class));
         output.flush();
     }
 }

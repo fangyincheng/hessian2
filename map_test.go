@@ -88,6 +88,11 @@ func TestMap(t *testing.T) {
 	//testDecodeFramework(t, "replyTypedMap_3", []interface{}{})
 }
 
+func TestMapMap(t *testing.T) {
+	testDecodeFramework(t, "customReplyMapAndMap", map[interface{}]interface{}{"obj2": map[interface{}]interface{}{"b": int32(2)}, "obj1": map[interface{}]interface{}{"a": int32(1)}})
+
+}
+
 func TestMapEncode(t *testing.T) {
 	testJavaDecode(t, "argTypedMap_0", map[interface{}]interface{}{})
 	testJavaDecode(t, "argTypedMap_1", map[interface{}]interface{}{"a": int32(0)})

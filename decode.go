@@ -159,7 +159,7 @@ func (d *Decoder) decType() (string, error) {
 		buf []byte
 		tag byte
 		idx int32
-		typ reflect.Type
+		c   classInfo
 	)
 
 	buf = arr[:1]
@@ -176,9 +176,12 @@ func (d *Decoder) decType() (string, error) {
 		return "", perrors.WithStack(err)
 	}
 
-	typ, _, err = d.getStructDefByIndex(int(idx))
+	tmp := d.isSkip
+	d.isSkip = true
+	_, c, err = d.getStructDefByIndex(int(idx))
+	d.isSkip = tmp
 	if err == nil {
-		return typ.String(), nil
+		return c.javaName, nil
 	}
 
 	return "", err
